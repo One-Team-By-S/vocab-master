@@ -128,7 +128,14 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
           title: Center(
-            child: Image.asset('assets/images/logo_title.png', height: 25),
+            child: Text(
+              'VocabMaster',
+              style: GoogleFonts.alice(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ),
         body: _widgetOptions.elementAt(index),
