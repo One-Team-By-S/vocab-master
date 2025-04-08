@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart'; // DateFormat uchun import
 
 import '../models/words_model/word.dart';
-import '../services/isar_service.dart';
 
 class EssetianalPage extends StatefulWidget {
   const EssetianalPage({super.key});
@@ -61,9 +60,10 @@ class _EssetianalPageState extends State<EssetianalPage> {
                               decoration: BoxDecoration(
                                 boxShadow: const [
                                   BoxShadow(
-                                      blurRadius: 2,
-                                      spreadRadius: -2,
-                                      offset: Offset(2, 2))
+                                    blurRadius: 2,
+                                    spreadRadius: -2,
+                                    offset: Offset(2, 2),
+                                  ),
                                 ],
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -79,148 +79,169 @@ class _EssetianalPageState extends State<EssetianalPage> {
                             Text(
                               'Essetianal Book ${unitNumber = state.data.indexOf(x) + 1}',
                               style: GoogleFonts.comfortaa(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 17),
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 17,
+                              ),
                             ),
                           ],
                         ),
-                        children: x.map((e) {
-                          return ExpansionTile(
-                            title: Text(
-                              'Unit ${x.indexOf(e) + 1}',
-                              style: GoogleFonts.comfortaa(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15),
-                            ),
-                            children: [
-                              ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: e.length,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  return Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Column(
+                        children:
+                            x.map((e) {
+                              return ExpansionTile(
+                                title: Text(
+                                  'Unit ${x.indexOf(e) + 1}',
+                                  style: GoogleFonts.comfortaa(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                children: [
+                                  ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: e.length,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                            MainAxisAlignment.spaceAround,
                                         children: [
-                                          SizedBox(
-                                            width: 120,
-                                            child: Text(
-                                              e[index].eng,
-                                              style: GoogleFonts.comfortaa(
-                                                  color: Colors.blue.shade700,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 15),
-                                            ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width: 120,
+                                                child: Text(
+                                                  e[index].eng,
+                                                  style: GoogleFonts.comfortaa(
+                                                    color: Colors.blue.shade700,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width: 120,
+                                                child: Text(
+                                                  e[index].uz,
+                                                  style: GoogleFonts.comfortaa(
+                                                    color: Colors.red.shade700,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            width: 120,
-                                            child: Text(
-                                              e[index].uz,
-                                              style: GoogleFonts.comfortaa(
-                                                  color: Colors.red.shade700,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 15),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                              IconButton(
-                                onPressed: () async {
-                                  List<HiveVocabluaryModel> vocabList = [];
-                                  int count = 0;
-
-                                  // So'zlarni guruhlash (har 20 ta so'zni bitta item sifatida qo'shish)
-                                  for (var word in e) {
-                                    HiveVocabluaryModel vocab =
-                                        HiveVocabluaryModel(
-                                      date: formattedDate,
-                                      eng: word.eng,
-                                      uz: word.uz,
-                                      name: 'Unit ${x.indexOf(e) + 1}',
-                                      unitIndex: x.indexOf(e) + 1,
-                                    );
-                                    vocabList.add(vocab);
-
-                                    count++;
-
-                                    // Agar 20 ta so'z yig'ilsa, ularni bitta item sifatida Hive-ga qo'shish
-                                    if (count == 20) {
-                                      HiveVocabluaryModel vocabBundle =
-                                          HiveVocabluaryModel(
-                                        date: formattedDate,
-                                        eng: vocabList.map((v) => v.eng).join(
-                                            ', '), // So'zlarni bitta satrga birlashtirish
-                                        uz: vocabList.map((v) => v.uz).join(
-                                            ', '), // So'zlarni bitta satrga birlashtirish
-                                        name: 'Unit ${x.indexOf(e) + 1}',
-                                        unitIndex: x.indexOf(e) + 1,
                                       );
+                                    },
+                                  ),
+                                  IconButton(
+                                    onPressed: () async {
+                                      List<HiveVocabluaryModel> vocabList = [];
+                                      int count = 0;
 
-                                      // Hive-ga bitta item sifatida qo'shish
-                                      HiveBoxes.allvocabluary.add(vocabBundle);
+                                      // So'zlarni guruhlash (har 20 ta so'zni bitta item sifatida qo'shish)
+                                      for (var word in e) {
+                                        HiveVocabluaryModel vocab =
+                                            HiveVocabluaryModel(
+                                              date: formattedDate,
+                                              eng: word.eng,
+                                              uz: word.uz,
+                                              name: 'Unit ${x.indexOf(e) + 1}',
+                                              unitIndex: x.indexOf(e) + 1,
+                                            );
+                                        vocabList.add(vocab);
 
-                                      // So'zlar ro'yxatini yangilash
-                                      vocabList = [];
-                                      count = 0;
-                                    }
-                                  }
+                                        count++;
 
-                                  // Qolgan so'zlarni bitta item sifatida qo'shish
-                                  if (vocabList.isNotEmpty) {
-                                    HiveVocabluaryModel vocabBundle =
-                                        HiveVocabluaryModel(
-                                      date: formattedDate,
-                                      eng: vocabList
-                                          .map((v) => v.eng)
-                                          .join(', '),
-                                      uz: vocabList.map((v) => v.uz).join(', '),
-                                      name: 'Unit ${x.indexOf(e) + 1}',
-                                      unitIndex: x.indexOf(e) + 1,
-                                    );
-                                    HiveBoxes.allvocabluary.add(vocabBundle);
-                                  }
+                                        // Agar 20 ta so'z yig'ilsa, ularni bitta item sifatida Hive-ga qo'shish
+                                        if (count == 20) {
+                                          HiveVocabluaryModel
+                                          vocabBundle = HiveVocabluaryModel(
+                                            date: formattedDate,
+                                            eng: vocabList
+                                                .map((v) => v.eng)
+                                                .join(
+                                                  ', ',
+                                                ), // So'zlarni bitta satrga birlashtirish
+                                            uz: vocabList
+                                                .map((v) => v.uz)
+                                                .join(
+                                                  ', ',
+                                                ), // So'zlarni bitta satrga birlashtirish
+                                            name: 'Unit ${x.indexOf(e) + 1}',
+                                            unitIndex: x.indexOf(e) + 1,
+                                          );
 
-                                  // Isar ma'lumotlar bazasiga saqlash
-                                  for (var word in e) {
-                                    Words wd = Words(
-                                      nameEn: word.eng,
-                                      nameUz: word.uz,
-                                    );
-                                    await IsarService().save(wd);
-                                  }
+                                          // Hive-ga bitta item sifatida qo'shish
+                                          HiveBoxes.allvocabluary.add(
+                                            vocabBundle,
+                                          );
 
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Unit ${x.indexOf(e) + 1} ma\'lumotlari saqlandi!',
-                                        style: GoogleFonts.comfortaa(
-                                            color: Colors.white),
-                                      ),
-                                      backgroundColor: Colors.green,
-                                    ),
-                                  );
-                                },
-                                icon: const Icon(Icons.save_alt_outlined),
-                              )
-                            ],
-                          );
-                        }).toList(),
+                                          // So'zlar ro'yxatini yangilash
+                                          vocabList = [];
+                                          count = 0;
+                                        }
+                                      }
+
+                                      // Qolgan so'zlarni bitta item sifatida qo'shish
+                                      if (vocabList.isNotEmpty) {
+                                        HiveVocabluaryModel vocabBundle =
+                                            HiveVocabluaryModel(
+                                              date: formattedDate,
+                                              eng: vocabList
+                                                  .map((v) => v.eng)
+                                                  .join(', '),
+                                              uz: vocabList
+                                                  .map((v) => v.uz)
+                                                  .join(', '),
+                                              name: 'Unit ${x.indexOf(e) + 1}',
+                                              unitIndex: x.indexOf(e) + 1,
+                                            );
+                                        HiveBoxes.allvocabluary.add(
+                                          vocabBundle,
+                                        );
+                                      }
+
+                                      // Isar ma'lumotlar bazasiga saqlash
+                                      for (var word in e) {
+                                        Words wd = Words(
+                                          nameEn: word.eng,
+                                          nameUz: word.uz,
+                                        );
+                                        await HiveBoxes.addwords.add(wd);
+                                      }
+
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Unit ${x.indexOf(e) + 1} ma\'lumotlari saqlandi!',
+                                            style: GoogleFonts.comfortaa(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          backgroundColor: Colors.green,
+                                        ),
+                                      );
+                                    },
+                                    icon: const Icon(Icons.save_alt_outlined),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
                       );
                     }),
                   ],
@@ -243,15 +264,10 @@ class _EssetianalPageState extends State<EssetianalPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Center(
-                    child: Text('Please check the connection'),
-                  ),
+                  const Center(child: Text('Please check the connection')),
                   Row(
                     children: [
-                      const Expanded(
-                        flex: 10,
-                        child: Text(""),
-                      ),
+                      const Expanded(flex: 10, child: Text("")),
                       Expanded(
                         flex: 8,
                         child: ElevatedButton(
@@ -268,8 +284,9 @@ class _EssetianalPageState extends State<EssetianalPage> {
                             ),
                           ),
                           onPressed: () {
-                            BlocProvider.of<GetvocabluaryBloc>(context)
-                                .add(FirebaseDataEvent());
+                            BlocProvider.of<GetvocabluaryBloc>(
+                              context,
+                            ).add(FirebaseDataEvent());
                           },
                           child: Ink(
                             height: 100,
@@ -277,15 +294,10 @@ class _EssetianalPageState extends State<EssetianalPage> {
                           ),
                         ),
                       ),
-                      const Expanded(
-                        flex: 10,
-                        child: Text(""),
-                      ),
+                      const Expanded(flex: 10, child: Text("")),
                     ],
                   ),
-                  const Center(
-                    child: Text('Press'),
-                  ),
+                  const Center(child: Text('Press')),
                 ],
               );
             } else {
@@ -294,10 +306,7 @@ class _EssetianalPageState extends State<EssetianalPage> {
                   const Text('No Data ...'),
                   Row(
                     children: [
-                      const Expanded(
-                        flex: 10,
-                        child: Text(""),
-                      ),
+                      const Expanded(flex: 10, child: Text("")),
                       Expanded(
                         flex: 8,
                         child: ElevatedButton(
@@ -314,8 +323,9 @@ class _EssetianalPageState extends State<EssetianalPage> {
                             ),
                           ),
                           onPressed: () {
-                            BlocProvider.of<GetvocabluaryBloc>(context)
-                                .add(FirebaseDataEvent());
+                            BlocProvider.of<GetvocabluaryBloc>(
+                              context,
+                            ).add(FirebaseDataEvent());
                           },
                           child: Ink(
                             height: 100,
@@ -323,15 +333,10 @@ class _EssetianalPageState extends State<EssetianalPage> {
                           ),
                         ),
                       ),
-                      const Expanded(
-                        flex: 10,
-                        child: Text(""),
-                      ),
+                      const Expanded(flex: 10, child: Text("")),
                     ],
                   ),
-                  const Center(
-                    child: Text('Press'),
-                  ),
+                  const Center(child: Text('Press')),
                 ],
               );
             }

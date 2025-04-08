@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:vocab_master/bloc/get_word/get_word_bloc.dart';
-import 'package:vocab_master/services/isar_service.dart';
+import 'package:vocab_master/services/hive_helper/hive_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,7 +43,7 @@ class ClearDialog extends StatelessWidget {
                       ),
                     ),
                     onPressed: () async {
-                      await IsarService().clear().then((value) {
+                      await HiveBoxes.addwords.clear().then((value) {
                         BlocProvider.of<GetWordBloc>(
                           context,
                         ).add(GetAllEvent());

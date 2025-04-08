@@ -2,7 +2,7 @@
 import 'package:vocab_master/models/words_model/word.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../services/isar_service.dart';
+import 'package:vocab_master/services/hive_helper/hive_names.dart';
 
 class AddWordsScreen extends StatefulWidget {
   const AddWordsScreen({super.key});
@@ -21,19 +21,21 @@ class _AddWordsScreenState extends State<AddWordsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        centerTitle: true
+        ,
+        title:  Text(
+          'Translated words',
+          style: GoogleFonts.poppins(
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+              fontSize: 23),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30),
-              child: Text(
-                'Translated words',
-                style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 23),
-              ),
-            ),
+
             ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -56,7 +58,7 @@ class _AddWordsScreenState extends State<AddWordsScreen> {
                       ..nameEn = enController.text
                       ..nameUz = uzController.text
                       ..isSelected = true;
-                    await IsarService().save(wd);
+                    await HiveBoxes.addwords.add(wd);
 
                     wordsList.add(wd);
                     enController.text = "";

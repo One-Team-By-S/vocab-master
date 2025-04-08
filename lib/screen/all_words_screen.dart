@@ -22,6 +22,7 @@ class _AllWordsScreenState extends State<AllWordsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: Column(
         children: [
           Padding(
@@ -60,11 +61,11 @@ class _AllWordsScreenState extends State<AllWordsScreen> {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () async {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) {
-                                return EditWordScreen(word: state.allW[index]);
-                              },
-                            ));
+                            // Navigator.push(context, MaterialPageRoute(
+                            //   builder: (context) {
+                            //     return EditWordScreen(word: state.allW[index]);
+                            //   },
+                            // ));
                           },
                           child: Container(
                             // color: Colors.transparent,

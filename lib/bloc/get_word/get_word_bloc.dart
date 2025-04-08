@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vocab_master/services/hive_helper/hive_names.dart';
 import '../../models/words_model/word.dart';
-import '../../services/isar_service.dart';
 part 'get_word_event.dart';
 part 'get_word_state.dart';
 
@@ -14,7 +14,7 @@ class GetWordBloc extends Bloc<GetWordEvent, GetWordState> {
     Emitter<GetWordState> emmit,
   ) async {
     emmit(GetProccesState());
-    List<Words> all = await IsarService().getAllSura();
+    List<Words> all = await HiveBoxes.addwords.values.toList();
     emmit(GetAllState(allW: all));
     
   }
